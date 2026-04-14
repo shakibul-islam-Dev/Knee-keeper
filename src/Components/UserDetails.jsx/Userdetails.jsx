@@ -1,6 +1,7 @@
-import React from "react";
-import { useLoaderData } from "react-router";
-
+import React, { useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import { FaLongArrowAltRight, FaLongArrowAltLeft } from "react-icons/fa";
 import {
   LuAlarmClock,
   LuArchive,
@@ -12,11 +13,58 @@ import {
 
 const UserDetails = () => {
   const userDetails = useLoaderData();
+  const { userId } = useParams();
+  const [activites, setActivites] = useState([]);
+  const navigate = useNavigate();
+  const handleCheckIN = (type) => {
+    const newActivaties = {
+      id: UserDetails.name,
+      action: type,
+      text: `${type} with ${userDetails.name}`,
+      time: new Date().toLocaleString(),
+    };
+
+    let SelectedIcon;
+    if (type === "Call")
+      SelectedIcon = <LuPhone className="text-emerald-600" />;
+    else if (type === "Text")
+      SelectedIcon = <LuMessageSquare className="text-blue-600" />;
+    else SelectedIcon = <LuVideo className="text-purple-600" />;
+    toast.success(newActivaties.text, {
+      icon: SelectedIcon,
+      position: "top-right",
+      autoClose: 3000,
+    });
+    setActivites([newActivaties, ...activites]);
+  };
+  const handleNavigatePrevious = () => {
+    navigate(-1);
+  };
+  const handleNavigateNext = () => {
+    navigate(`/userDetails/${userId}`);
+  };
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-6 mt-8 rounded-3xl shadow-lg border border-gray-100 flex flex-col md:flex-row gap-8">
-      <div>Button</div>
+      <ToastContainer />
+
       <div className="w-full md:w-1/3 space-y-4">
+        <div className="flex items-center justify-center gap-4">
+          <button
+            onClick={handleNavigatePrevious}
+            className="flex btn items-center gap-3"
+          >
+            <FaLongArrowAltLeft />
+            Previous
+          </button>
+          <button
+            onClick={handleNavigateNext}
+            className="btn flex items-center gap-3"
+          >
+            Next
+            <FaLongArrowAltRight />
+          </button>
+        </div>
         <div className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center text-center shadow-sm">
           <img
             src={userDetails.picture}
@@ -96,15 +144,30 @@ const UserDetails = () => {
             Quick Check-In
           </h4>
           <div className="grid grid-cols-3 gap-4">
-            <button className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group">
+            <button
+              onClick={() => {
+                handleCheckIN("Call");
+              }}
+              className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group"
+            >
               <LuPhone className="text-2xl text-gray-700 group-hover:text-emerald-600" />
               <span className="text-sm font-bold text-gray-800">Call</span>
             </button>
-            <button className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group">
+            <button
+              onClick={() => {
+                handleCheckIN("Text");
+              }}
+              className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group"
+            >
               <LuMessageSquare className="text-2xl text-gray-700 group-hover:text-emerald-600" />
               <span className="text-sm font-bold text-gray-800">Text</span>
             </button>
-            <button className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group">
+            <button
+              onClick={() => {
+                handleCheckIN("Video");
+              }}
+              className="bg-white border border-gray-100 p-6 rounded-2xl flex flex-col items-center gap-2 hover:shadow-md hover:border-emerald-200 transition group"
+            >
               <LuVideo className="text-2xl text-gray-700 group-hover:text-emerald-600" />
               <span className="text-sm font-bold text-gray-800">Video</span>
             </button>

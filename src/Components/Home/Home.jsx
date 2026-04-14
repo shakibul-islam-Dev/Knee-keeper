@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../Navigation/Nav";
 import { useLoaderData } from "react-router";
 import { IoMdAdd } from "react-icons/io";
 import Cards from "../Cards/Cards";
@@ -8,10 +7,22 @@ const Home = () => {
   const friendsData = useLoaderData();
 
   const stats = [
-    { id: 1, label: "Total Friends", value: 10 },
-    { id: 2, label: "On Track", value: 3 },
-    { id: 3, label: "Need Attention", value: 6 },
-    { id: 4, label: "Interactions This Month", value: 12 },
+    { id: 1, label: "Total Friends", value: friendsData.length },
+    {
+      id: 2,
+      label: "On Track",
+      value: friendsData.filter((item) => item.status === "on-track").length,
+    },
+    {
+      id: 3,
+      label: "Need Attention",
+      value: friendsData.filter((item) => item.status === "overdue").length,
+    },
+    {
+      id: 4,
+      label: "Interactions This Month",
+      value: friendsData.filter((item) => item.days_since_contact <= 30).length,
+    },
   ];
   return (
     <>

@@ -1,24 +1,30 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
-import Nav from "./Components/Navigation/Nav.jsx";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import Root from "./Components/Root/Root.jsx";
 import Home from "./Components/Home/Home.jsx";
 import Timeline from "./Components/Timeline/Timeline.jsx";
 import Status from "./Components/Status/Status.jsx";
 import UserDetails from "./Components/UserDetails.jsx/Userdetails.jsx";
+import ErrorPage from "./Components/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
+    errorElement: <ErrorPage />,
+
     children: [
       {
         index: true,
-        path: "/home",
+        loader: async () => await fetch("/friends.json"),
+        Component: Home,
+      },
+      {
+        path: "home",
         loader: async () => await fetch("/friends.json"),
         Component: Home,
       },
@@ -37,13 +43,10 @@ const router = createBrowserRouter([
         loader: async ({ params }) => {
           const response = await fetch("/friends.json");
           const data = await response.json();
-
           const singleUser = data.find((user) => user.id == params.userID);
-
           if (!singleUser) {
             throw new Response("User Not Found", { status: 404 });
           }
-
           return singleUser;
         },
         Component: UserDetails,
@@ -51,7 +54,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
