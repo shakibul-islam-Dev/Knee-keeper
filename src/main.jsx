@@ -9,6 +9,8 @@ import Root from "./Components/Root/Root.jsx";
 import Home from "./Components/Home/Home.jsx";
 import Timeline from "./Components/Timeline/Timeline.jsx";
 import Status from "./Components/Status/Status.jsx";
+import UserDetails from "./Components/UserDetails.jsx/Userdetails.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,16 +19,34 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "/home",
-        loader: async ({ params }) => await fetch("/fridens.json"),
+        loader: async () => await fetch("/friends.json"),
         Component: Home,
       },
       {
-        path: "timeline", // This will show at http://localhost:5173/timeline
+        path: "timeline",
+        loader: async () => await fetch("/friends.json"),
         Component: Timeline,
       },
       {
         path: "status",
+        loader: async () => await fetch("/friends.json"),
         Component: Status,
+      },
+      {
+        path: "userDetails/:userID",
+        loader: async ({ params }) => {
+          const response = await fetch("/friends.json");
+          const data = await response.json();
+
+          const singleUser = data.find((user) => user.id == params.userID);
+
+          if (!singleUser) {
+            throw new Response("User Not Found", { status: 404 });
+          }
+
+          return singleUser;
+        },
+        Component: UserDetails,
       },
     ],
   },

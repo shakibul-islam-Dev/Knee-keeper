@@ -1,23 +1,55 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Card = ({ data }) => {
-  const { days_since_contact, name, picture, status, tags } = data;
+  const { days_since_contact, name, id, picture, status, tags } = data;
+
+  const statusStyles = {
+    "on-track": "bg-[#244D3F]",
+    "almost due": "bg-[#EFAD44]",
+    overdue: "bg-red-600",
+  };
+
   return (
-    <div className="w-full container mx-auto border-2 flex">
-      <img src={picture} />
-      <h1>name:{name}</h1>
-      <p>{days_since_contact}</p>
-      <p>
+    <div className="w-full max-w-sm mx-auto p-5 space-y-4 shadow-lg rounded-2xl border-gray-400 flex flex-col items-center justify-between transition-transform hover:scale-105 bg-white">
+      <img
+        className="h-28 w-28 border-4 border-gray-700 rounded-full object-cover"
+        src={picture}
+        alt={name}
+      />
+
+      <div className="text-center space-y-1">
+        <h1 className="font-bold text-2xl text-gray-800">{name}</h1>
+        <p className="text-gray-500 font-medium">
+          {days_since_contact} days ago
+        </p>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-2">
         {tags.map((tag, index) => (
-          <div
+          <span
             key={index}
-            className="bg-slate-100 px-3 py-1 rounded-md text-sm text-slate-600"
+            className="bg-[#D1FAE5] px-4 py-1.5 rounded-full text-xs font-semibold text-[#064E3B] uppercase tracking-wide"
           >
             {tag}
-          </div>
+          </span>
         ))}
+      </div>
+
+      <p
+        className={`${statusStyles[status] || "bg-gray-500"} px-4 py-2 text-white capitalize rounded-lg font-medium`}
+      >
+        {status}
       </p>
-      <p>{status}</p>
+
+      <div className="w-full pt-2">
+        <Link
+          to={`/userDetails/${id}`}
+          className="btn btn-primary w-full text-white font-bold py-3 rounded-xl transition-colors"
+        >
+          Show Details
+        </Link>
+      </div>
     </div>
   );
 };
