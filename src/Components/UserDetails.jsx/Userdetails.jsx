@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router";
+import React from "react";
+import { useLoaderData, useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import { FaLongArrowAltRight, FaLongArrowAltLeft } from "react-icons/fa";
 import {
@@ -13,8 +13,7 @@ import {
 
 const UserDetails = () => {
   const userDetails = useLoaderData();
-  const { userId } = useParams();
-  const [activites, setActivites] = useState([]);
+  console.log(userDetails);
   const navigate = useNavigate();
   const handleCheckIN = (type) => {
     const newActivaties = {
@@ -35,13 +34,9 @@ const UserDetails = () => {
       position: "top-right",
       autoClose: 3000,
     });
-    setActivites([newActivaties, ...activites]);
   };
   const handleNavigatePrevious = () => {
     navigate(-1);
-  };
-  const handleNavigateNext = () => {
-    navigate(`/userDetails/${userId}`);
   };
 
   return (
@@ -58,7 +53,7 @@ const UserDetails = () => {
             Previous
           </button>
           <button
-            onClick={handleNavigateNext}
+            // onClick={handleNavigateNext}
             className="btn flex items-center gap-3"
           >
             Next
@@ -85,7 +80,7 @@ const UserDetails = () => {
           </div>
 
           <p className="italic text-gray-500 mt-4 text-sm leading-relaxed">
-            "Former colleague, great mentor"
+            {userDetails.bio}
           </p>
           <p className="text-xs text-gray-400 mt-1">
             Preferred: {userDetails.email}
@@ -116,13 +111,17 @@ const UserDetails = () => {
             </p>
           </div>
           <div className="bg-white border border-gray-100 p-6 rounded-2xl text-center shadow-sm">
-            <h3 className="text-4xl font-extrabold text-gray-900">30</h3>
+            <h3 className="text-4xl font-extrabold text-gray-900">
+              {userDetails.goal}
+            </h3>
             <p className="text-xs text-gray-500 mt-1 font-medium">
               Goal (Days)
             </p>
           </div>
           <div className="bg-white border border-gray-100 p-6 rounded-2xl text-center shadow-sm flex flex-col justify-center">
-            <h3 className="text-lg font-bold text-gray-900">Feb 27, 2026</h3>
+            <h3 className="text-lg font-bold text-gray-900">
+              {userDetails.next_due_date}
+            </h3>
             <p className="text-xs text-gray-500 mt-1 font-medium">Next Due</p>
           </div>
         </div>
@@ -132,7 +131,9 @@ const UserDetails = () => {
             <h4 className="text-lg font-bold text-emerald-900">
               Relationship Goal
             </h4>
-            <p className="text-gray-600 font-medium">Connect every 30 days</p>
+            <p className="text-gray-600 font-medium">
+              Connect every {userDetails.days_since_contact} days
+            </p>
           </div>
           <button className="px-5 py-2 border border-gray-300 rounded-lg text-sm font-bold hover:bg-gray-50 transition">
             Edit

@@ -23,7 +23,11 @@ const Timeline = () => {
       {/* Filter Bar */}
       <div className="relative mb-10 max-w-xs">
         <div className="flex items-center justify-between w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-400 bg-white">
-          <span>Filter timeline</span>
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-ghost"
+          />
           <ChevronDown size={20} />
         </div>
       </div>

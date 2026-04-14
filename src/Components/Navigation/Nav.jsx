@@ -12,8 +12,6 @@ const Nav = () => {
     const isActive = currentPath === path;
     const base =
       "font-medium transition-all duration-300 p-2 md:px-4 md:py-1.5 rounded-lg flex flex-col md:flex-row items-center gap-1 md:gap-2";
-
-    // Mobile ebong Desktop er jonno solid active colors
     const active = "text-white bg-[#244d44]";
     const inactive = "text-slate-500 hover:text-[#244d44] bg-transparent";
 
@@ -27,7 +25,7 @@ const Nav = () => {
           <div className="flex items-center justify-between h-14 md:h-16">
             <Link
               to="/"
-              className="text-xl font-bold tracking-tight text-slate-800"
+              className="text-xl font-bold  tracking-tight text-slate-800"
             >
               Keen<span className="text-[#244d44]">Keeper</span>
             </Link>
