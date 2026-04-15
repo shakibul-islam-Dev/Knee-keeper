@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       {
         index: true,
         loader: async () => await fetch("/friends.json"),
-        Component: Welcome,
+        Component: Home,
       },
       {
         path: "home",
