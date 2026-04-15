@@ -8,6 +8,7 @@ import Timeline from "./Components/Timeline/Timeline.jsx";
 import Status from "./Components/Status/Status.jsx";
 import UserDetails from "./Components/UserDetails.jsx/Userdetails.jsx";
 import ErrorPage from "./Components/ErrorPage/ErrorPage.jsx";
+import Welcome from "./Components/Wellcome/Wellcome.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       {
         index: true,
         loader: async () => await fetch("/friends.json"),
-        Component: Home,
+        Component: Welcome,
       },
       {
         path: "home",
